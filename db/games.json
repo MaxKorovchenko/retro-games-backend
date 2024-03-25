@@ -1,0 +1,20 @@
+[
+  {
+    "id": "1",
+    "title": "mario",
+    "platform": "8-bit",
+    "favorite": "false"
+  },
+  {
+    "id": "2",
+    "title": "MKII",
+    "platform": "16-bit",
+    "favorite": "false"
+  },
+  {
+    "id": "3",
+    "title": "Dune",
+    "platform": "16-bit",
+    "favorite": "false"
+  }
+]
