@@ -5,81 +5,50 @@ const {
   updateGameService,
   deleteGameService,
 } = require("../db/gamesService");
-const { HttpError } = require("../helpers");
-const { addGameSchema } = require("../schemas");
+const { HttpError, ctrlWrapper } = require("../helpers");
 
-const getAllgames = async (req, res, next) => {
-  try {
-    const games = await getAllGamesService();
-    res.status(200).json(games);
-  } catch (error) {
-    next(error);
+const getAllgames = ctrlWrapper(async (req, res) => {
+  const games = await getAllGamesService();
+  res.status(200).json(games);
+});
+
+const getGame = ctrlWrapper(async (req, res) => {
+  const { gameId } = req.params;
+  const game = await getGameService(gameId);
+
+  if (!game) {
+    throw new HttpError(404, "Not found");
   }
-};
 
-const getGame = async (req, res, next) => {
-  try {
-    const { gameId } = req.params;
-    const game = await getGameService(gameId);
+  res.status(200).json(game);
+});
 
-    if (!game) {
-      throw new HttpError(404, "Not found");
-    }
+const addGame = ctrlWrapper(async (req, res) => {
+  const game = await addGameService(req.body);
+  res.status(201).json(game);
+});
 
-    res.status(200).json(game);
-  } catch (error) {
-    next(error);
+const updateGame = ctrlWrapper(async (req, res) => {
+  const { gameId } = req.params;
+  const game = await updateGameService(gameId, req.body);
+
+  if (!game) {
+    throw new HttpError(404, "Not found");
   }
-};
 
-const addGame = async (req, res, next) => {
-  try {
-    const { error } = addGameSchema.validate(req.body);
-    if (error) {
-      throw new HttpError(400, error.message);
-    }
+  res.status(200).json(game);
+});
 
-    const game = await addGameService(req.body);
-    res.status(201).json(game);
-  } catch (error) {
-    next(error);
+const deleteGame = ctrlWrapper(async (req, res) => {
+  const { gameId } = req.params;
+  const game = await deleteGameService(gameId);
+
+  if (!game) {
+    throw new HttpError(404, "Not found");
   }
-};
 
-const updateGame = async (req, res, next) => {
-  try {
-    const { error } = addGameSchema.validate(req.body);
-    if (error) {
-      throw new HttpError(400, error.message);
-    }
-
-    const { gameId } = req.params;
-    const game = await updateGameService(gameId, req.body);
-
-    if (!game) {
-      throw new HttpError(404, "Not found");
-    }
-
-    res.status(200).json(game);
-  } catch (error) {
-    next(error);
-  }
-};
-
-const deleteGame = async (req, res, next) => {
-  try {
-    const { gameId } = req.params;
-    const game = await deleteGameService(gameId);
-
-    if (!game) {
-      throw new HttpError(404, "Not found");
-    }
-
-    res.status(200).json({ message: "Game deleted" });
-  } catch (error) {
-    next(error);
-  }
-};
+  res.status(200).json({ message: "Game deleted" });
+});
 
 module.exports = {
   getAllgames,
