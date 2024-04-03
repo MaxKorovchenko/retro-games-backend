@@ -6,20 +6,20 @@ const {
   updateGame,
   deleteGame,
 } = require("../controllers/gamesCtrl");
-const { validateBody } = require("../middlewares");
+const { validateBody, isValidId } = require("../middlewares");
 const { addGameSchema } = require("../schemas");
 
 const router = express.Router();
 
 router.get("/", getAllgames);
 
-router.get("/:gameId", getGame);
+router.get("/:gameId", isValidId, getGame);
 
 router.post("/", validateBody(addGameSchema), addGame);
 
-router.put("/:gameId", validateBody(addGameSchema), updateGame);
+router.put("/:gameId", isValidId, validateBody(addGameSchema), updateGame);
 
-router.delete("/:gameId", deleteGame);
+router.delete("/:gameId", isValidId, deleteGame);
 
 module.exports = {
   gamesRouter: router,

@@ -1,14 +1,20 @@
+const {
+  getAllGamesService,
+  getGameService,
+  addGameService,
+  updateGameService,
+  deleteGameService,
+} = require("../db/gamesService");
 const { HttpError, ctrlWrapper } = require("../helpers");
-const { Game } = require("../models/game");
 
 const getAllgames = ctrlWrapper(async (req, res) => {
-  const games = await Game.find({}, "-createdAt -updatedAt");
+  const games = await getAllGamesService();
   res.status(200).json(games);
 });
 
 const getGame = ctrlWrapper(async (req, res) => {
   const { gameId } = req.params;
-  const game = await Game.findById(gameId);
+  const game = await getGameService(gameId);
 
   if (!game) {
     throw new HttpError(404, "Not found");
@@ -18,13 +24,13 @@ const getGame = ctrlWrapper(async (req, res) => {
 });
 
 const addGame = ctrlWrapper(async (req, res) => {
-  const game = await Game.create(req.body);
+  const game = await addGameService(req.body);
   res.status(201).json(game);
 });
 
 const updateGame = ctrlWrapper(async (req, res) => {
   const { gameId } = req.params;
-  const game = await Game.findByIdAndUpdate(gameId, req.body, { new: true });
+  const game = await updateGameService(gameId, req.body);
 
   if (!game) {
     throw new HttpError(404, "Not found");
@@ -35,7 +41,7 @@ const updateGame = ctrlWrapper(async (req, res) => {
 
 const deleteGame = ctrlWrapper(async (req, res) => {
   const { gameId } = req.params;
-  const game = await Game.findByIdAndDelete(gameId);
+  const game = await deleteGameService(gameId);
 
   if (!game) {
     throw new HttpError(404, "Not found");
