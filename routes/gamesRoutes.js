@@ -5,7 +5,7 @@ const {
   addGame,
   updateGame,
   deleteGame,
-} = require("../controllers/gamesCtrl");
+} = require("../controllers/games");
 const { validateBody, isValidId } = require("../middlewares");
 const { addGameSchema } = require("../schemas");
 
