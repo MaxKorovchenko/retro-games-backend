@@ -3,13 +3,14 @@ const cors = require("cors");
 
 require("dotenv").config();
 
-const { gamesRouter } = require("./routes");
+const { gamesRouter, authRouter } = require("./routes");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
+app.use("/api/auth", authRouter);
 app.use("/api/games", gamesRouter);
 
 app.use((req, res) => {
