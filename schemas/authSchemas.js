@@ -9,9 +9,8 @@ const registerSchema = Joi.object({
 });
 
 const loginSchema = Joi.object({
-  title: Joi.string().required(),
-  platform: Joi.string().valid("8-bit", "16-bit").required(),
-  favorite: Joi.boolean(),
+  email: Joi.string().pattern(emailRegex).required(),
+  password: Joi.string().min(6).required(),
 });
 
 module.exports = {
