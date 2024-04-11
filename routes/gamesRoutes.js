@@ -6,10 +6,12 @@ const {
   updateGame,
   deleteGame,
 } = require("../controllers/games");
-const { validateBody, isValidId } = require("../middlewares");
+const { validateBody, isValidId, authenticate } = require("../middlewares");
 const { addGameSchema } = require("../schemas");
 
 const router = express.Router();
+
+router.use(authenticate);
 
 router.get("/", getAllgames);
 
