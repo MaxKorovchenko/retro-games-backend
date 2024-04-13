@@ -2,7 +2,13 @@ const { HttpError, ctrlWrapper } = require("../helpers");
 const { Game } = require("../models/game");
 
 const getAllgames = ctrlWrapper(async (req, res) => {
-  const games = await Game.find({}, "-createdAt -updatedAt");
+  const { _id: owner } = req.user;
+  const { page = 1, limit = 10 } = req.query;
+  const skip = (page - 1) * limit;
+  const games = await Game.find({ owner }, "-createdAt -updatedAt")
+    .skip(skip)
+    .limit(limit)
+    .populate("owner", "name email");
   res.status(200).json(games);
 });
 
@@ -18,7 +24,8 @@ const getGame = ctrlWrapper(async (req, res) => {
 });
 
 const addGame = ctrlWrapper(async (req, res) => {
-  const game = await Game.create(req.body);
+  const { _id: owner } = req.user;
+  const game = await Game.create({ ...req.body, owner });
   res.status(201).json(game);
 });
 

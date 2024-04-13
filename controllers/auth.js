@@ -38,11 +38,33 @@ const login = ctrlWrapper(async (req, res) => {
   };
 
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1d" });
+  await User.findByIdAndUpdate(user._id, { token });
 
   res.status(200).json({ token });
+});
+
+const getCurrentUser = ctrlWrapper(async (req, res) => {
+  const { name, email } = req.user;
+
+  return res.status(200).json({
+    name,
+    email,
+  });
+});
+
+const logout = ctrlWrapper(async (req, res) => {
+  const { _id } = req.user;
+
+  await User.findByIdAndUpdate(_id, { token: "" });
+
+  return res.status(200).json({
+    message: "Logout successful",
+  });
 });
 
 module.exports = {
   register,
   login,
+  getCurrentUser,
+  logout,
 };
