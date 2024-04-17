@@ -50,7 +50,13 @@ const login = ctrlWrapper(async (req, res) => {
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "7d" });
   await User.findByIdAndUpdate(user._id, { token });
 
-  res.status(200).json({ token });
+  res.status(200).json({
+    token,
+    user: {
+      name: user.name,
+      email: user.email,
+    },
+  });
 });
 
 const getCurrentUser = ctrlWrapper(async (req, res) => {
