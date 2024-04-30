@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { isValidObjectId } = require("mongoose");
 
 const { ctrlWrapper, HttpError } = require("../helpers");
 const { User } = require("../models/user");
@@ -78,9 +79,36 @@ const logout = ctrlWrapper(async (req, res) => {
   });
 });
 
+const addToFavoriteGames = ctrlWrapper(async (req, res) => {
+  const { _id } = req.user;
+  const { gameId } = req.body;
+
+  if (!isValidObjectId(gameId)) {
+    throw new HttpError(404, `id ${gameId} is not valid`);
+  }
+
+  const user = await User.findById(_id);
+
+  if (!user) {
+    throw new HttpError(404, "User not found");
+  }
+
+  if (user.favoriteGames.includes(gameId)) {
+    throw new HttpError(400, "Game already in favorites");
+  }
+
+  user.favoriteGames.push(gameId);
+  await user.save();
+
+  return res.status(200).json({
+    message: "Game added to favorites successfully",
+  });
+});
+
 module.exports = {
   register,
   login,
   getCurrentUser,
   logout,
+  addToFavoriteGames,
 };
