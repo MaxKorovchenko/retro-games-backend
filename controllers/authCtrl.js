@@ -29,6 +29,7 @@ const register = ctrlWrapper(async (req, res) => {
     user: {
       name: newUser.name,
       email: newUser.email,
+      favoriteGames: newUser.favoriteGames,
     },
   });
 });
@@ -56,16 +57,18 @@ const login = ctrlWrapper(async (req, res) => {
     user: {
       name: user.name,
       email: user.email,
+      favoriteGames: user.favoriteGames,
     },
   });
 });
 
 const getCurrentUser = ctrlWrapper(async (req, res) => {
-  const { name, email } = req.user;
+  const { name, email, favoriteGames } = req.user;
 
   return res.status(200).json({
     name,
     email,
+    favoriteGames,
   });
 });
 
@@ -101,6 +104,7 @@ const addToFavoriteGames = ctrlWrapper(async (req, res) => {
   await user.save();
 
   return res.status(200).json({
+    favoriteGames: user.favoriteGames,
     message: "Game added to favorites successfully",
   });
 });
