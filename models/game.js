@@ -12,10 +12,6 @@ const gameSchema = new Schema(
       enum: ["8-bit", "16-bit"],
       required: true,
     },
-    favorite: {
-      type: Boolean,
-      default: false,
-    },
   },
   { versionKey: false, timestamps: true }
 );
