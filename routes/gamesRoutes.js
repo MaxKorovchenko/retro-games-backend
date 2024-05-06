@@ -1,6 +1,6 @@
 const express = require("express");
 const {
-  getAllgames,
+  getAllGames,
   updateGame,
   getGame,
   addGame,
@@ -10,7 +10,7 @@ const { addGameSchema } = require("../schemas");
 
 const router = express.Router();
 
-router.get("/", getAllgames);
+router.get("/", getAllGames);
 
 router.get("/:gameId", isValidId, getGame);
 

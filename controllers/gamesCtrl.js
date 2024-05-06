@@ -1,10 +1,11 @@
 const { HttpError, ctrlWrapper } = require("../helpers");
 const { Game } = require("../models/game");
 
-const getAllgames = ctrlWrapper(async (req, res) => {
+const getAllGames = ctrlWrapper(async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
   const skip = (page - 1) * limit;
   const games = await Game.find({}, "-createdAt -updatedAt")
+    .sort({ title: 1 })
     .skip(skip)
     .limit(limit);
 
@@ -50,7 +51,7 @@ const deleteGame = ctrlWrapper(async (req, res) => {
 });
 
 module.exports = {
-  getAllgames,
+  getAllGames,
   getGame,
   addGame,
   updateGame,
