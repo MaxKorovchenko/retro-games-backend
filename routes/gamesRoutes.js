@@ -16,13 +16,7 @@ router.get("/:gameId", isValidId, getGame);
 
 router.post("/", validateBody(addGameSchema), addGame);
 
-router.put(
-  "/:gameId",
-  authenticate,
-  isValidId,
-  validateBody(addGameSchema),
-  updateGame
-);
+router.put("/:gameId", authenticate, isValidId, updateGame);
 
 //router.delete("/:gameId", isValidId, deleteGame);
 

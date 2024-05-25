@@ -7,6 +7,7 @@ const {
   getCurrentUser,
   logout,
   addToFavoriteGames,
+  removeFromFavoriteGames,
 } = require("../controllers/authCtrl");
 
 const router = express.Router();
@@ -20,6 +21,8 @@ router.get("/current", authenticate, getCurrentUser);
 router.post("/logout", authenticate, logout);
 
 router.patch("/favoriteGames", authenticate, addToFavoriteGames);
+
+router.delete("/favoriteGames/:gameId", authenticate, removeFromFavoriteGames);
 
 module.exports = {
   authRouter: router,

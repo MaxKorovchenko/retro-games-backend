@@ -87,7 +87,7 @@ const addToFavoriteGames = ctrlWrapper(async (req, res) => {
   const { gameId } = req.body;
 
   if (!isValidObjectId(gameId)) {
-    throw new HttpError(404, `id ${gameId} is not valid`);
+    throw new HttpError(400, `id ${gameId} is not valid`);
   }
 
   const user = await User.findById(_id);
@@ -109,10 +109,41 @@ const addToFavoriteGames = ctrlWrapper(async (req, res) => {
   });
 });
 
+const removeFromFavoriteGames = ctrlWrapper(async (req, res) => {
+  const { _id } = req.user;
+  const { gameId } = req.params;
+
+  if (!isValidObjectId(gameId)) {
+    throw new HttpError(400, `id ${gameId} is not valid`);
+  }
+
+  const user = await User.findById(_id);
+
+  if (!user) {
+    throw new HttpError(404, "User not found");
+  }
+
+  const gameIndex = user.favoriteGames.indexOf(gameId);
+
+  if (gameIndex === -1) {
+    throw new HttpError(400, "Game not found in favorites");
+  }
+
+  user.favoriteGames.splice(gameIndex, 1);
+
+  await user.save();
+
+  return res.status(200).json({
+    favoriteGames: user.favoriteGames,
+    message: "Game removed from favorites successfully",
+  });
+});
+
 module.exports = {
   register,
   login,
   getCurrentUser,
   logout,
   addToFavoriteGames,
+  removeFromFavoriteGames,
 };
