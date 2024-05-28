@@ -105,7 +105,7 @@ const addToFavoriteGames = ctrlWrapper(async (req, res) => {
 
   return res.status(200).json({
     favoriteGames: user.favoriteGames,
-    message: "Game added to favorites successfully",
+    message: "The game was successfully added to your favorites",
   });
 });
 
@@ -135,7 +135,7 @@ const removeFromFavoriteGames = ctrlWrapper(async (req, res) => {
 
   return res.status(200).json({
     favoriteGames: user.favoriteGames,
-    message: "Game removed from favorites successfully",
+    message: "The game was successfully removed from your favorites",
   });
 });
 
