@@ -56,6 +56,10 @@ const gameSchema = new Schema(
       type: Number,
       required: true,
     },
+    romName: {
+      type: String,
+      required: true,
+    },
   },
   { versionKey: false, timestamps: true }
 );

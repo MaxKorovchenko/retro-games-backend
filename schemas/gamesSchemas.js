@@ -28,6 +28,7 @@ const addGameSchema = Joi.object({
     .required(),
   numberOfPlayers: Joi.number().required(),
   releaseYear: Joi.number().required(),
+  romName: Joi.string().required(),
 });
 
 module.exports = {
