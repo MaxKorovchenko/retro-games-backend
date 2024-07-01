@@ -29,6 +29,7 @@ const addGameSchema = Joi.object({
   numberOfPlayers: Joi.number().required(),
   releaseYear: Joi.number().required(),
   romName: Joi.string().required(),
+  cheats: Joi.string().default("No cheats available"),
 });
 
 module.exports = {

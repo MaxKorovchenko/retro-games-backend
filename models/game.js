@@ -60,6 +60,10 @@ const gameSchema = new Schema(
       type: String,
       required: true,
     },
+    cheats: {
+      type: String,
+      default: "No cheats available",
+    },
   },
   { versionKey: false, timestamps: true }
 );
