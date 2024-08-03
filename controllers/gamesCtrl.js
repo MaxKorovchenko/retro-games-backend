@@ -2,7 +2,7 @@ const { HttpError, ctrlWrapper } = require("../helpers");
 const { Game } = require("../models/game");
 
 const getAllGames = ctrlWrapper(async (req, res) => {
-  const { page = 1, limit = 50 } = req.query;
+  const { page = 1, limit = 100 } = req.query;
   const skip = (page - 1) * limit;
   const games = await Game.find({}, "-createdAt -updatedAt")
     .sort({ title: 1 })
