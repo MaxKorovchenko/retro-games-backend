@@ -11,7 +11,9 @@ const register = ctrlWrapper(async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
 
-  if (user) throw new HttpError(409, "Email already in use");
+  if (user) {
+    throw new HttpError(409, "Email already in use");
+  }
 
   const hashPassword = await bcrypt.hash(password, 10);
 
@@ -39,11 +41,15 @@ const login = ctrlWrapper(async (req, res) => {
 
   const user = await User.findOne({ email });
 
-  if (!user) throw new HttpError(401, "Bad email or password");
+  if (!user) {
+    throw new HttpError(401, "Invalid email or password");
+  }
 
   const isValidPassword = await bcrypt.compare(password, user.password);
 
-  if (!isValidPassword) throw new HttpError(401, "Bad email or password");
+  if (!isValidPassword) {
+    throw new HttpError(401, "Invalid email or password");
+  }
 
   const payload = {
     id: user._id,

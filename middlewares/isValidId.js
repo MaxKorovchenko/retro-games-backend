@@ -5,7 +5,7 @@ const isValidId = (req, res, next) => {
   const { gameId } = req.params;
 
   if (!isValidObjectId(gameId)) {
-    return next(new HttpError(404, `id ${gameId} is not valid`));
+    return next(new HttpError(400, `id ${gameId} is not valid`));
   }
 
   next();
